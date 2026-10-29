@@ -77,7 +77,7 @@ Transcripts are wrapped in `<transcript>` tags and a transcript cannot close its
 One `ModelGateway` interface with two methods, `runTurn` and `extract`. `ClaudeGateway` uses `@anthropic-ai/sdk` directly with:
 - `claude-opus-5-5` by default (`AGENT_MODEL` to change), with effort set explicitly;
 - **server-side fallback** (`fallbacks: "default"`): if the model declines a request for policy reasons, the API retries on a recommended substitute inside the same call;
-- a **cache breakpoint on the system prompt**, so the tools and system prompt form a stable prefix. Nothing per-request goes in it; who is asking and today's date go in the user turn. A prefix this small may be under the model's minimum cacheable length, so check `cacheReadTokens` in the logs before relying on it.
+- a **cache breakpoint on the system prompt**, so the tools and system prompt form a stable prefix. Nothing per-request goes in it; who is asking and today's date go in the user turn. In the smoke run, repeat calls read 788–1,231 tokens from cache (`cacheReadTokens` in the logs).
 
 Token usage, cache hits and stop reasons are logged as JSON lines on stderr with a correlation ID. Every write also goes to an `audit_log` table.
 
